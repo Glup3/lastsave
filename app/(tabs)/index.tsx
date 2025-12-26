@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Alert, Button, Platform, StyleSheet, Text } from 'react-native';
+import { Alert, Button, StyleSheet, Text } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -10,11 +10,12 @@ import { useEffect, useState } from 'react';
 import {
   useAudioRecorder,
   AudioModule,
-  RecordingPresets,
   setAudioModeAsync,
   useAudioRecorderState,
   useAudioPlayer,
   useAudioPlayerStatus,
+  IOSOutputFormat,
+  AudioQuality,
 } from 'expo-audio';
 
 export default function HomeScreen() {
@@ -24,7 +25,30 @@ export default function HomeScreen() {
   const [permissionsGranted, setPermissionsGranted] = useState(false)
   const [transcription, setTranscription] = useState<string>('')
   const [isTranscribing, setIsTranscribing] = useState(false)
-  const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY)
+  const audioRecorder = useAudioRecorder({
+    extension: '.wav',
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    bitRate: 128000,
+    android: {
+      outputFormat: 'default',
+      audioEncoder: 'default',
+    },
+    ios: {
+      extension: '.wav',
+      outputFormat: IOSOutputFormat.LINEARPCM,
+      audioQuality: AudioQuality.MAX,
+      sampleRate: 16000,
+      linearPCMBitDepth: 16,
+      linearPCMIsBigEndian: false,
+      linearPCMIsFloat: false,
+    },
+    web: {
+      mimeType: 'audio/webm',
+      bitsPerSecond: 128000,
+    },
+  })
+  // const audioRecorder = useAudioRecorder({ ...RecordingPresets.HIGH_QUALITY, extension: '.wav' })
   const recorderState = useAudioRecorderState(audioRecorder)
   const audioPlayer = useAudioPlayer(audioRecorder.uri || '')
   const playerStatus = useAudioPlayerStatus(audioPlayer)
