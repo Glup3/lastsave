@@ -19,6 +19,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen name='record' options={{ headerShown: false, presentation: 'formSheet', sheetGrabberVisible: true, sheetAllowedDetents: [0.45], contentStyle: { backgroundColor: 'white' } }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

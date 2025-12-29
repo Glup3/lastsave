@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { Alert, Button, StyleSheet, Text } from 'react-native';
+import { Alert, Button, Pressable, StyleSheet, Text } from 'react-native';
+import { Plus } from 'lucide-react-native'
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -17,8 +18,10 @@ import {
   IOSOutputFormat,
   AudioQuality,
 } from 'expo-audio';
+import { Link, useRouter } from 'expo-router';
 
 export default function HomeScreen() {
+  const router = useRouter()
   const [whisperContext, setWhisperContext] = useState<WhisperContext | null>(
     null
   );
@@ -152,10 +155,16 @@ export default function HomeScreen() {
         <ThemedText type="title">Hi Anna!</ThemedText>
         <HelloWave />
       </ThemedView>
+
+      <Pressable onPress={() => router.push('/record')} className='p-4'>
+        <Plus />
+      </Pressable>
+
       <ThemedView>
         <Button title="Permissions" onPress={handleGrantPermissions} />
         <Text className='text-red-500'>Permissions {permissionsGranted ? 'granted' : 'denied'}</Text>
       </ThemedView>
+
 
       <ThemedView style={styles.recordingContainer}>
         <Button
